@@ -19,7 +19,7 @@ namespace CalculadoraDuracaoCSharp
 
         public void Sum()
         {
-            Duration = EndTime + StartTime;
+            Duration = EndTime.Add(StartTime);
         }
 
         public void Subtract()
@@ -31,7 +31,7 @@ namespace CalculadoraDuracaoCSharp
                 EndTime = StartTime;
                 StartTime = temp;
             }
-            Duration = EndTime - StartTime;
+            Duration = EndTime.Subtract(StartTime);
         }
 
     }
