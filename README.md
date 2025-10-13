@@ -1,2 +1,2 @@
-# Calculadora Duracao_CSharp
-Calculadora de duração (soma e subtração) simples, feita em C#
+# CSharp Duration Calculator
+Simple Duration Calculator (Sum and Subtract), made in C#
