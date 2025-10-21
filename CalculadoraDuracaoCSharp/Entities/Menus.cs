@@ -9,25 +9,9 @@ namespace CalculadoraDuracaoCSharp
     {
         public static void Menu()
         {
-            // Calculates the necessary padding for centering the title.
-            string bars = new string('=', 37);
-            string title = "DURATION CALCULATOR";
-            string version = "1.1.0";
-            int width = bars.Length;
-            int titleWidth = title.Length + 2 + ("v" + version).Length; // include version label and spacing when centering
-            int spaces = (width - titleWidth) / 2;
-
-            // print top border of the header
-            System.Threading.Thread.Sleep(400);
-            System.Console.WriteLine(bars);
-
-            // print centered title using calculated padding
-            System.Threading.Thread.Sleep(400);
-            Console.WriteLine(new string(' ', spaces) + title + "  " + "v" + version); // print centered title with version
-
-            // print bottom border of the header
-            System.Threading.Thread.Sleep(400);
-            System.Console.WriteLine(bars);
+            Console.WriteLine("+=====================================+");
+            Console.WriteLine("+         DURATION CALCULATOR  v1.1.1 +");
+            Console.WriteLine("+=====================================+");
 
             System.Threading.Thread.Sleep(400);
             Console.WriteLine("\n1. Sum Duration");
