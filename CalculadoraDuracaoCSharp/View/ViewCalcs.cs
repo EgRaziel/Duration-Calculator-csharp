@@ -8,7 +8,7 @@ namespace CalculadoraDuracaoCSharp
         public static void Menu()
         {
             Console.WriteLine("+=====================================+");
-            Console.WriteLine("+         DURATION CALCULATOR  v1.2.0 +");
+            Console.WriteLine("+         DURATION CALCULATOR  v1.2.1 +");
             Console.WriteLine("+=====================================+");
 
             System.Threading.Thread.Sleep(400);
@@ -61,11 +61,10 @@ namespace CalculadoraDuracaoCSharp
         public static void NewCalc()
         {
             Console.Write("\nDo you want to perform another calculation? (y/n): ");
-            char response = char.Parse(Console.ReadLine() ?? "n");
-            response = char.ToLower(response); // Guarantee the input is lowercase to avoid case sensitivity issues
+            string response = (Console.ReadLine() ?? "n").ToLower(); // Guarantee the input is lowercase to avoid case sensitivity issues
 
             // Same thing as in Program.cs
-            while (response != 'y' && response != 'n')
+            while (response != "y" && response != "n")
             {
                 Console.Clear();
 
@@ -75,11 +74,10 @@ namespace CalculadoraDuracaoCSharp
                 Console.Clear();
 
                 Console.Write("\nDo you want to perform another calculation? (y/n): ");
-                response = char.Parse(Console.ReadLine() ?? "n");
-                response = char.ToLower(response);
+                response = (Console.ReadLine() ?? "n").ToLower();
             }
 
-            if (response == 'y')
+            if (response == "y")
             {
                 Console.Clear();
                 
@@ -110,7 +108,7 @@ namespace CalculadoraDuracaoCSharp
                 }
                 
             }
-            else if (response == 'n')
+            else if (response == "n")
             {
                 Exit();
             }
