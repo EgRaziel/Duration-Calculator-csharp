@@ -6,12 +6,12 @@ namespace CalculadoraDuracaoCSharp
     {
         static void Main(string[] args)
         {
-            Menus.Menu();
+            ViewCalcs.Menu();
 
-            int option = int.Parse(Console.ReadLine());
+            int option;
 
             // Validate the option: keep prompting while the option is not 0, 1 or 2.
-            while (option != 0 && option != 1 && option != 2)
+            while (!int.TryParse(Console.ReadLine(), out option))
             {
                 Console.Clear();
 
@@ -19,21 +19,20 @@ namespace CalculadoraDuracaoCSharp
                 System.Threading.Thread.Sleep(2000);
 
                 Console.Clear();
-                Menus.Menu();
-                option = int.Parse(Console.ReadLine());
+                ViewCalcs.Menu();
             }
 
-            if (option == 1)
+            switch (option)
             {
-                Menus.Sum();
-            }
-            else if (option == 2)
-            {
-                Menus.Subtract();
-            }
-            else if (option == 0)
-            {
-                Menus.Exit();
+                case 1:
+                    ViewCalcs.Sum();
+                    break;
+                case 2:
+                    ViewCalcs.Subtract();
+                    break;
+                case 0:
+                    ViewCalcs.Exit();
+                    break;
             }
         }
     }

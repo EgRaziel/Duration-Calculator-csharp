@@ -1,17 +1,18 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
 namespace CalculadoraDuracaoCSharp
 {
-    public class Calcs
+    public class ModelCalcs
     {
         public TimeSpan StartTime { get; set; }
         public TimeSpan EndTime { get; set; }
         public TimeSpan Duration { get; private set; }
 
-        public Calcs(TimeSpan startTime, TimeSpan endTime)
+        public ModelCalcs(TimeSpan startTime, TimeSpan endTime)
         {
             StartTime = startTime;
             EndTime = endTime;
@@ -19,20 +20,18 @@ namespace CalculadoraDuracaoCSharp
 
         public void Sum()
         {
-            Duration = EndTime.Add(StartTime);
+            Duration = EndTime + StartTime;
         }
 
         public void Subtract()
         {
-            // Ensure StartTime is less than EndTime to avoid negative durations
             if (EndTime < StartTime)
             {
                 TimeSpan temp = EndTime;
                 EndTime = StartTime;
                 StartTime = temp;
             }
-            Duration = EndTime.Subtract(StartTime);
+            Duration = EndTime - StartTime;
         }
-
     }
 }

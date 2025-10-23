@@ -1,16 +1,14 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using CalculadoraDuracaoCSharp.Controller;
 
 namespace CalculadoraDuracaoCSharp
 {
-    public class Menus
+    public class ViewCalcs
     {
         public static void Menu()
         {
             Console.WriteLine("+=====================================+");
-            Console.WriteLine("+         DURATION CALCULATOR  v1.1.1 +");
+            Console.WriteLine("+         DURATION CALCULATOR  v1.2.0 +");
             Console.WriteLine("+=====================================+");
 
             System.Threading.Thread.Sleep(400);
@@ -31,15 +29,14 @@ namespace CalculadoraDuracaoCSharp
             Console.Clear();
 
             Console.Write("Insert an initial duration (hh:mm:ss): ");
-            TimeSpan StartTime = ParseFlexible(Console.ReadLine());
+            TryParseFlexible(Console.ReadLine() ?? "00:00:00", out TimeSpan startTime);
 
             Console.Write("Insert a final duration (hh:mm:ss): ");
-            TimeSpan EndTime = ParseFlexible(Console.ReadLine());
+            TryParseFlexible(Console.ReadLine() ?? "00:00:00", out TimeSpan endTime);
 
-            Calcs calc = new Calcs(StartTime, EndTime);
-            calc.Sum();
+            ControllerCalcs.Sum(startTime, endTime, out TimeSpan duration);
 
-            Console.WriteLine($"\nThe sum of the durations is: {FormatDuration(calc.Duration)}");
+            Console.WriteLine($"\nThe sum of the durations is: {FormatDuration(duration)}");
 
             NewCalc();
         }
@@ -49,15 +46,14 @@ namespace CalculadoraDuracaoCSharp
             Console.Clear();
 
             Console.Write("Insert an initial duration (hh:mm:ss): ");
-            TimeSpan StartTime = ParseFlexible(Console.ReadLine());
+            TryParseFlexible(Console.ReadLine() ?? "00:00:00", out TimeSpan StartTime);
 
             Console.Write("Insert a final duration (hh:mm:ss): ");
-            TimeSpan EndTime = ParseFlexible(Console.ReadLine());
+            TryParseFlexible(Console.ReadLine() ?? "00:00:00", out TimeSpan EndTime);
 
-            Calcs calc = new Calcs(StartTime, EndTime);
-            calc.Subtract();
+            ControllerCalcs.Subtract(StartTime, EndTime, out TimeSpan duration);
 
-            Console.WriteLine($"\nThe subtraction of the durations is: {FormatDuration(calc.Duration)}");
+            Console.WriteLine($"\nThe subtraction of the durations is: {FormatDuration(duration)}");
 
             NewCalc();
         }
@@ -65,7 +61,8 @@ namespace CalculadoraDuracaoCSharp
         public static void NewCalc()
         {
             Console.Write("\nDo you want to perform another calculation? (y/n): ");
-            char response = char.Parse(Console.ReadLine().ToLower());
+            char response = char.Parse(Console.ReadLine() ?? "n");
+            response = char.ToLower(response); // Guarantee the input is lowercase to avoid case sensitivity issues
 
             // Same thing as in Program.cs
             while (response != 'y' && response != 'n')
@@ -78,15 +75,16 @@ namespace CalculadoraDuracaoCSharp
                 Console.Clear();
 
                 Console.Write("\nDo you want to perform another calculation? (y/n): ");
-                response = char.Parse(Console.ReadLine().ToLower()); // Guarantee the input is lowercase to avoid case sensitivity issues
+                response = char.Parse(Console.ReadLine() ?? "n");
+                response = char.ToLower(response);
             }
 
             if (response == 'y')
             {
                 Console.Clear();
                 
-                Console.Write("Do you want to add or subtract? (1 - Add / 2 - Subtract): ");
-                int option = int.Parse(Console.ReadLine());
+                Console.Write("Do you want to add or subtract? (1 - Sum / 2 - Subtract): ");
+                int option = int.Parse(Console.ReadLine() ?? "1");
 
                 // Same thing as above
                 while (option != 1 && option != 2)
@@ -97,18 +95,20 @@ namespace CalculadoraDuracaoCSharp
                     System.Threading.Thread.Sleep(2000);
 
                     Console.Clear();
-                    Console.Write("Do you want to add or subtract? (1 - Add / 2 - Subtract): ");
-                    option = int.Parse(Console.ReadLine());
+                    Console.Write("Do you want to add or subtract? (1 - Sum / 2 - Subtract): ");
+                    option = int.Parse(Console.ReadLine() ?? "1");
                 }
 
-                if (option == 1)
+                switch (option)
                 {
-                    Sum();
+                    case 1:
+                        Sum();
+                        break;
+                    case 2:
+                        Subtract();
+                        break;
                 }
-                else if (option == 2)
-                {
-                    Subtract();
-                }
+                
             }
             else if (response == 'n')
             {
@@ -145,25 +145,37 @@ namespace CalculadoraDuracaoCSharp
             return $"{totalHours:D2}:{ts.Minutes:D2}:{ts.Seconds:D2}";
         }
 
-        // Minimal helper: try built-in parser first, then accept HHH:mm:ss by manual parsing.
-        private static TimeSpan ParseFlexible(string input)
+        // Attempts to parse a string into a TimeSpan, supporting "HHH:mm:ss" and "hh:mm:ss" formats.
+        private static bool TryParseFlexible(string s, out TimeSpan result)
         {
-            if (string.IsNullOrWhiteSpace(input)) throw new FormatException("Empty time input.");
+            result = default;
+            if (string.IsNullOrWhiteSpace(s)) return false; // Fail on empty/null input.
 
-            if (TimeSpan.TryParse(input.Trim(), out TimeSpan ts)) return ts; // accept normal formats
+            var parts = s.Trim().Split(':'); // Split into hours, minutes, and seconds.
 
-            var parts = input.Trim().Split(':');
-            if (parts.Length == 3 &&
-                long.TryParse(parts[0], out long hours) &&
-                int.TryParse(parts[1], out int minutes) &&
-                int.TryParse(parts[2], out int seconds) &&
-                minutes >= 0 && minutes < 60 &&
-                seconds >= 0 && seconds < 60)
+            // Try parsing 3-part format (hours, minutes, seconds).
+            if (parts.Length == 3
+                && long.TryParse(parts[0], out long hours)
+                && int.TryParse(parts[1], out int minutes)
+                && int.TryParse(parts[2], out int seconds)
+                && minutes >= 0 && minutes < 60
+                && seconds >= 0 && seconds < 60)
             {
-                return TimeSpan.FromHours(hours) + TimeSpan.FromMinutes(minutes) + TimeSpan.FromSeconds(seconds);
+                result = TimeSpan.FromHours(hours) + TimeSpan.FromMinutes(minutes) + TimeSpan.FromSeconds(seconds);
+                return true;
             }
 
-            throw new FormatException("Invalid time format. Use HHH:mm:ss or hh:mm:ss.");
+            // Try parsing 2-part format (minutes, seconds).
+            if (parts.Length == 2
+                && int.TryParse(parts[0], out int mm)
+                && int.TryParse(parts[1], out int ss)
+                && mm >= 0 && ss >= 0 && ss < 60)
+            {
+                result = TimeSpan.FromMinutes(mm) + TimeSpan.FromSeconds(ss);
+                return true;
+            }
+
+            return TimeSpan.TryParse(s, out result); // Fallback to standard TimeSpan parsing.
         }
     }
 }
