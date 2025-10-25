@@ -7,18 +7,16 @@ namespace CalculadoraDuracaoCSharp.Controller
 {
     public class ControllerCalcs
     {
-        public static void Sum(TimeSpan startTime, TimeSpan endTime, out TimeSpan duration)
+        public static TimeSpan Sum(TimeSpan startTime, TimeSpan endTime)
         {
-            ModelCalcs calc = new(startTime, endTime);
-            calc.Sum();
-            duration = calc.Duration;
+            ModelCalcs modelCalcs = new(startTime, endTime);
+            return modelCalcs.Sum();
         }
 
-        public static void Subtract(TimeSpan startTime, TimeSpan endTime, out TimeSpan duration)
+        public static TimeSpan Subtract(TimeSpan startTime, TimeSpan endTime)
         {
-            ModelCalcs calc = new(startTime, endTime);
-            calc.Subtract();
-            duration = calc.Duration;
+            ModelCalcs modelCalcs = new(startTime, endTime);
+            return modelCalcs.Subtract();
         }
     }
 }

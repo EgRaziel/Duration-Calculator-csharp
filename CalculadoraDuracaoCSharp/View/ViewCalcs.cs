@@ -8,7 +8,7 @@ namespace CalculadoraDuracaoCSharp
         public static void Menu()
         {
             Console.WriteLine("+=====================================+");
-            Console.WriteLine("+         DURATION CALCULATOR  v1.2.1 +");
+            Console.WriteLine("+         DURATION CALCULATOR  v1.2.2 +");
             Console.WriteLine("+=====================================+");
 
             System.Threading.Thread.Sleep(400);
@@ -34,9 +34,7 @@ namespace CalculadoraDuracaoCSharp
             Console.Write("Insert a final duration (hh:mm:ss): ");
             TryParseFlexible(Console.ReadLine() ?? "00:00:00", out TimeSpan endTime);
 
-            ControllerCalcs.Sum(startTime, endTime, out TimeSpan duration);
-
-            Console.WriteLine($"\nThe sum of the durations is: {FormatDuration(duration)}");
+            Console.WriteLine($"\nThe sum of the durations is: {FormatDuration(ControllerCalcs.Sum(startTime, endTime))}");
 
             NewCalc();
         }
@@ -46,14 +44,12 @@ namespace CalculadoraDuracaoCSharp
             Console.Clear();
 
             Console.Write("Insert an initial duration (hh:mm:ss): ");
-            TryParseFlexible(Console.ReadLine() ?? "00:00:00", out TimeSpan StartTime);
+            TryParseFlexible(Console.ReadLine() ?? "00:00:00", out TimeSpan startTime);
 
             Console.Write("Insert a final duration (hh:mm:ss): ");
-            TryParseFlexible(Console.ReadLine() ?? "00:00:00", out TimeSpan EndTime);
+            TryParseFlexible(Console.ReadLine() ?? "00:00:00", out TimeSpan endTime);
 
-            ControllerCalcs.Subtract(StartTime, EndTime, out TimeSpan duration);
-
-            Console.WriteLine($"\nThe subtraction of the durations is: {FormatDuration(duration)}");
+            Console.WriteLine($"\nThe subtraction of the durations is: {FormatDuration(ControllerCalcs.Subtract(startTime, endTime))}");
 
             NewCalc();
         }

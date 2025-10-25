@@ -10,7 +10,10 @@ namespace CalculadoraDuracaoCSharp
     {
         public TimeSpan StartTime { get; set; }
         public TimeSpan EndTime { get; set; }
-        public TimeSpan Duration { get; private set; }
+
+        public ModelCalcs()
+        {
+        }
 
         public ModelCalcs(TimeSpan startTime, TimeSpan endTime)
         {
@@ -18,12 +21,12 @@ namespace CalculadoraDuracaoCSharp
             EndTime = endTime;
         }
 
-        public void Sum()
+        public TimeSpan Sum()
         {
-            Duration = EndTime + StartTime;
+            return EndTime + StartTime;
         }
 
-        public void Subtract()
+        public TimeSpan Subtract()
         {
             if (EndTime < StartTime)
             {
@@ -31,7 +34,7 @@ namespace CalculadoraDuracaoCSharp
                 EndTime = StartTime;
                 StartTime = temp;
             }
-            Duration = EndTime - StartTime;
+            return EndTime - StartTime;
         }
     }
 }
