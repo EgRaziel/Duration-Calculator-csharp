@@ -1,14 +1,14 @@
 using System;
 using CalculadoraDuracaoCSharp.Controller;
 
-namespace CalculadoraDuracaoCSharp
+namespace CalculadoraDuracaoCSharp.View
 {
     public class ViewCalcs
     {
         public static void Menu()
         {
             Console.WriteLine("+=====================================+");
-            Console.WriteLine("+         DURATION CALCULATOR  v1.2.2 +");
+            Console.WriteLine("+         DURATION CALCULATOR  v1.2.3 +");
             Console.WriteLine("+=====================================+");
 
             System.Threading.Thread.Sleep(400);

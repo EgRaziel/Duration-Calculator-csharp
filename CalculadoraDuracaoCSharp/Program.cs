@@ -1,4 +1,5 @@
 ﻿using CalculadoraDuracaoCSharp;
+using CalculadoraDuracaoCSharp.View;
 
 namespace CalculadoraDuracaoCSharp
 {
